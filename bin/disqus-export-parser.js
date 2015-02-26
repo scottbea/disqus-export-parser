@@ -1,3 +1,2 @@
-var disqusParser = require('../index.js');
-debugger;
-disqusParser.cli();
+#!/usr/bin/env node
+require('../index.js').cli();
