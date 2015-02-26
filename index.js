@@ -183,6 +183,7 @@ exports.toJson = function(inputFileName, makePretty, outputFileName) {
 	var xml = fs.readFileSync(inputFileName);
 
 	// Check the params
+	var cb;
 	if (_.isFunction(outputFileName)) { cb = outputFileName; outputFileName = null; }
 
 	// If JSON then output pretty json
@@ -191,12 +192,12 @@ exports.toJson = function(inputFileName, makePretty, outputFileName) {
 		Xml2Object(xml, function(err, obj) {
 			if (obj) { buffer = makePretty ? JSON.stringify(obj) : pretty.json(obj); }
 
-			if (outputFileName) { try { fs.writeFileSync(outputFileName, buffer); } catch(e) { console.err(e); } }
+			if (outputFileName) { try { fs.writeFileSync(outputFileName, buffer); } catch(e) { console.log(e); } }
 
 			if (cb) { cb(err, buffer); }
 		});
 	}
-	catch(e) { console.err(e); }
+	catch(e) { console.log(e); }
 }
 
 exports.toTsv = function(inputFileName, makePretty, outputFileName) {
@@ -205,6 +206,7 @@ exports.toTsv = function(inputFileName, makePretty, outputFileName) {
 	var xml = fs.readFileSync(inputFileName);
 
 	// Check the params
+	var cb;
 	if (_.isFunction(outputFileName)) { cb = outputFileName; outputFileName = null; }
 
 	// If JSON then output pretty json
@@ -216,15 +218,15 @@ exports.toTsv = function(inputFileName, makePretty, outputFileName) {
 			// Write out the headers
 			buffer.push("type\tobjectId\tid\tforum\tcategoryId\tcategory.title\tlink\ttitle\tmessage\tcreatedAt\tauthorEmail\tauthorName\tisAnonymous\tusername\tipAddress\tisClosed\tisDeleted\tisSpam\tyear\tmonth\tday\thost\tpathname\tlinkLanguage\tlinkSeg1\tlinkSeg2\tlinkSeg3\tlinkSeg4\tlinkSeg5");
 			
-			try { threadTable = parseThreads(obj, buffer); } catch(e) { console.err(e); }
+			try { threadTable = parseThreads(obj, buffer); } catch(e) { console.log(e); }
 
-			try { parsePosts(obj, threadTable, buffer); } catch(e) { console.err(e); }
+			try { parsePosts(obj, threadTable, buffer); } catch(e) { console.log(e); }
 
-			if (outputFileName) { try { fs.writeFileSync(outputFileName, buffer.join('\n')); } catch(e) { console.err(e); } }
+			if (outputFileName) { try { fs.writeFileSync(outputFileName, buffer.join('\n')); } catch(e) { console.log(e); } }
 
 			if (cb) { cb(err, buffer.join('\n')); }			
 		});
 	}
-	catch(e) { console.err(e); }
+	catch(e) { console.log(e); }
 }
 
