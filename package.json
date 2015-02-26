@@ -1,0 +1,28 @@
+{
+  "name": "disqus-export-parser",
+  "version": "0.1.0",
+  "description": "Node Module and CLI for converting Disqus XML export files to JSON or Flat File",
+  "author": "Scott Beaudreau <sjbeaudreau@gmail.com>",
+  "bin": {
+    "disqus-export-parser": "./bin/disqus-export-parser"
+  },
+  "scripts": {
+  },
+  "main": "index.js",
+  "keywords": [
+    "cli",
+    "disqus",
+    "parsing",
+    "xml",
+    "json",
+    "flatfile"
+  ],
+  "dependencies": {
+    "pretty-data": "~0.40.0",
+    "underscore": "~1.7.0",
+    "xml2js": "*"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
