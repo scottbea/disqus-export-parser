@@ -196,7 +196,7 @@ exports.parse = function (inputFileName, mode, outputFileName) {
 	// If JSON then output pretty json
 	var buffer;
 
-	if ((mode != "json") && (mode != "pretty")) {
+	if (mode == "tsv") {
 		buffer = [];
 		// Write out the headers
 		buffer.push("type\tobjectId\tid\tforum\tcategoryId\tcategory.title\tlink\ttitle\tmessage\tcreatedAt\tauthorEmail\tauthorName\tisAnonymous\tusername\tipAddress\tisClosed\tisDeleted\tisSpam\tyear\tmonth\tday\thost\tpathname\tlinkLanguage\tlinkSeg1\tlinkSeg2\tlinkSeg3\tlinkSeg4\tlinkSeg5");
