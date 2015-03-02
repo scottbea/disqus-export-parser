@@ -172,26 +172,13 @@ exports.cli = function () {
 	}
 
 	// If JSON then output pretty json
-	if ((mode == "json") || (mode == "pretty")) {
-		exports.toJson(filename, (mode == "pretty") ? true : false, outputFilename);
-	}
-	else {
-		exports.toTsv(filename, (mode == "pretty") ? true : false, outputFilename);
-	}
-
+	exports.convert(filename, mode, outputFilename);
 };
 
-exports.parse = function (inputFileName, mode, outputFileName) {
+exports.parse = function (inputFileName, mode, cb) {
 
 	// Read the file
 	var xml = fs.readFileSync(inputFileName);
-
-	// Check the params
-	var cb;
-	if (_.isFunction(outputFileName)) {
-		cb = outputFileName;
-		outputFileName = null;
-	}
 
 	// If JSON then output pretty json
 	var buffer;
@@ -231,23 +218,34 @@ exports.parse = function (inputFileName, mode, outputFileName) {
 				else {
 					buffer = buffer.join('\n');
 				}
-
-				if (outputFileName) {
-					try {
-						fs.writeFileSync(outputFileName, buffer);
-					} catch (e) {
-						console.log(e);
-					}
-				}
 			}
 
 			if (cb) {
 				cb(err, buffer);
+			}
+			else {
+				return buffer;
 			}
 		});
 	}
 	catch (e) {
 		console.log(e);
 	}
+};
+
+exports.convert = function (inputFileName, mode, outputFileName, cb) {
+	// Read the file
+	exports.parse(inputFileName, mode, function(err, buffer) {
+		if (outputFileName) {
+			fs.writeFileSync(outputFileName, buffer);
+		}
+		else {
+			console.log(buffer);
+		}
+
+		if (cb) {
+			cb(err, buffer);
+		}
+	});
 };
 
