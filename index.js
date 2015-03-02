@@ -219,7 +219,10 @@ exports.parse = function (inputFileName, mode, outputFileName) {
 			}
 
 			if (obj) {
-				if (mode == "json") {
+				if ((mode == "object") || _.isUndefined(mode)) {
+					buffer = obj;
+				}
+				else if (mode == "json") {
 					buffer = JSON.stringify(obj);
 				}
 				else if (mode == "pretty") {
