@@ -33,8 +33,8 @@ function parseThreads(obj, buffer) {
 
 		thread.objectId = thread.a["dsq:id"];
 		thread.categoryId = thread.category.a["dsq:id"];
-		thread.authorEmail = (thread.author || {}).email || "";
-		thread.authorName = (thread.author || {}).name || "";
+		thread.authorEmail = ((thread.author || {}).email || "").replace(/ /g, "_");;
+		thread.authorName = ((thread.author || {}).name || "").replace(/ /g, "_");;
 		thread.createdDate = new Date(thread.createdAt);
 		thread.year = thread.createdDate.getFullYear();
 		thread.month = thread.createdDate.getMonth() + 1;
@@ -109,14 +109,15 @@ function parsePosts(obj, threadTable, buffer) {
 		var post = posts[i];
 
 		post.objectId = post.a['dsq:id'];
-		post.authorEmail = (post.author || {}).email || "";
-		post.authorName = (post.author || {}).name || "";
+		post.authorEmail = ((post.author || {}).email || "").replace(/ /g, "_");
+		post.authorName = ((post.author || {}).name || "").replace(/ /g, "_");
 		post.isAnonymous = (post.isAnonymous || {}).isAnonymous;
 		post.threadId = post.thread.a['dsq:id'];
 		post.message = (post.message || "").replace(/\t/g, " ");
 		post.isSpam = (post.isSpam == "true") ? "spam" : "non-spam";
 
 		var thread = threadTable[post.threadId] || {};
+		post.thread = thread;
 
 		post.createdDate = new Date(post.createdAt);
 		post.year = post.createdDate.getFullYear();
@@ -128,11 +129,11 @@ function parsePosts(obj, threadTable, buffer) {
 				type,
 				post.objectId,
 				post.id,
-				thread.forum,
-				thread.categoryId,
-				thread.categoryTitle,
-				thread.link,
-				thread.title,
+				post.thread.forum,
+				post.thread.categoryId,
+				post.thread.categoryTitle,
+				post.thread.link,
+				post.thread.title,
 				post.message,
 				post.createdAt,
 				post.authorEmail,
@@ -140,20 +141,20 @@ function parsePosts(obj, threadTable, buffer) {
 				post.isAnonymous,
 				"",
 				post.ipAddress,
-				thread.isClosed,
+				post.thread.isClosed,
 				post.isDeleted,
 				post.isSpam,
 				post.year,
 				post.month,
 				post.day,
-				thread.host,
-				thread.pathname,
-				thread.linkLanguage,
-				thread.linkSeg1,
-				thread.linkSeg2,
-				thread.linkSeg3,
-				thread.linkSeg4,
-				thread.linkSeg5
+				post.thread.host,
+				post.thread.pathname,
+				post.thread.linkLanguage,
+				post.thread.linkSeg1,
+				post.thread.linkSeg2,
+				post.thread.linkSeg3,
+				post.thread.linkSeg4,
+				post.thread.linkSeg5
 			].join('\t'));
 		}
 	}
